@@ -1,0 +1,50 @@
+.Person {
+    border: 1px solid #000;
+    background-color: #fff;
+    padding: 15px;
+
+    .img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 50%;
+        float: left;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    h2 {
+        font-size: 16px;
+        margin-left: 10px;
+    }
+
+    p {
+        width: 100%;
+        margin-bottom: 0px;
+    }
+
+    button {
+        background: darken(#FF0000,15%);
+        border: 0px;
+        color: #FFF;
+        padding: 3px 5px 3px 5px;
+        float: right;
+        border-radius: 5px;
+    }
+
+    .techs {
+        margin-top: 5px;
+
+        span {
+            display: inline-block;
+            background: #CFCFCF;
+            padding: 1px 3px;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    }
+}

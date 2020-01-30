@@ -1,0 +1,57 @@
+body {
+    background-color: #FFF;
+}
+
+#app {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+aside {
+    flex: 1;
+    width: 150px;
+    border: 1px solid #000;
+    padding: 20px;
+    box-sizing: border-box;
+    
+    .input-block {
+        width: 100%;
+        float: left;
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 5px;
+        }
+
+        &.half {
+            width: calc(50% - 7.5px);
+        }
+
+        &.fright { 
+            float: right;
+        }
+    }
+}
+
+main {
+    margin-left: 20px;
+    flex: 2;
+}
+
+main ul {
+    padding: 0px;
+    margin: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+
+    li {
+        list-style: none;
+    }
+}
+
+.MuiInput-root {
+    width: 100%;
+}
