@@ -23,8 +23,20 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "dev.thales.devradar",
+      "config": {
+        "googleMaps": {
+            "apiKey": "AIzaSyAnDNJnKCH1mUwu5iHCKSfagP0eut2ndw4"
+        }
+      }
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.thales",
+        "config": {
+            "googleMapsApiKey": "AIzaSyAnDNJnKCH1mUwu5iHCKSfagP0eut2ndw4"
+        }
     }
   }
 }

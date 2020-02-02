@@ -1,11 +1,8 @@
 import React, { useState,useEffect } from 'react';
-import { StyleSheet, Image, View, KeyboardAvoidingView, Text, TextInput } from 'react-native';
-import { useHeaderHeight } from 'react-navigation-stack';
+import { StyleSheet, Image, View, Text, ActivityIndicator } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { MaterialIcons } from '@expo/vector-icons';
 import {requestPermissionsAsync, getCurrentPositionAsync} from 'expo-location';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import MultiSelect from 'react-native-multiple-select';
 import api from '../services/api';
 
@@ -14,6 +11,7 @@ function Main({navigation}) {
     const [multiSelect, setMultiSelect] = useState(null);
     const [users, setUsers] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [isHidden, setIsHidden] = useState(false);
 
     useEffect(()=> { 
         async function loadInitialPosition() { 
@@ -32,6 +30,13 @@ function Main({navigation}) {
                     latitudeDelta: 0.01,
                     longitudeDelta: 0.01
                 })
+
+                let searchFor = {
+                    techs: [],
+                    longitude: longitude,
+                    latitude: latitude
+                }
+                searchUser(searchFor);
             }
         }
         loadInitialPosition();
@@ -43,8 +48,11 @@ function Main({navigation}) {
 
     async function searchUser(searchFor) {
         try {
+            setIsHidden(false);
             const usersList = await api.post("/users", searchFor);
+            console.log(usersList); 
             setUsers(usersList.data);
+            setIsHidden(true);
         } catch(e) {
             console.log(e);
         }
@@ -94,14 +102,23 @@ function Main({navigation}) {
                 <View style={styles.callout}>
                     <Text style={styles.userName}>{user.username}</Text>
                     <Text style={styles.userBio}>{user.bio != null ? user.bio : '(sem bio)'}</Text>
+                    <View style={{flexDirection: 'row',height:'auto'}}>
                     {user.techs.map(tech => (
-                        <Text>{tech}</Text>
+                        <Text key={user._id+"_"+tech} style={styles.tech}>{tech}</Text>
                     ))}
+                    </View>
                 </View>
             </Callout>
         </Marker>
         ))}
     </MapView>
+
+    <View style={[styles.loading, isHidden ? styles.loadingHide:{} ]} >
+        <View style={styles.loadingIcon}>
+            <ActivityIndicator size="large" color="#FFFFFF" />
+            <Text style={styles.loadingText}>Carregando...</Text>
+        </View>
+    </View>
     
     <View style={styles.searchBox}>
         <View style={styles.multiSelectBox}>
@@ -136,6 +153,38 @@ function Main({navigation}) {
 } 
 
 const styles = StyleSheet.create({
+    loading: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 6,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)'
+    },
+    loadingHide: {
+        width: 0,
+        height: 0,
+    },
+    loadingIcon: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    loadingText: {
+        fontSize: 16,
+        marginTop: 10,
+        color: '#FFFFFF'
+    },
+    tech: {
+        backgroundColor: '#000000',
+        color: '#FFFFFF',
+        padding: 3,
+        fontSize: 12, 
+        borderRadius: 5,
+        marginTop: 3,
+        marginRight: 3
+    },
     multiSelectBox: {
         flex: 1,
         marginLeft: 0,
