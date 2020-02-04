@@ -121,7 +121,7 @@ function App() {
       <h1>DevRadar</h1>
 
       <p>Devs subscribed with coordinate within 10 kilometers from you will appear in the mobile app.</p>
-      <p>Mobile App APK (Android Only): <a href="https://omnistack-week-10-nodejs.herokuapp.com/devradar.apk">Download</a></p>
+      <p>Mobile App APK (Android Only): <a href="https://omnistack-week-10-nodejs.herokuapp.com/getapk">Download</a></p>
 
       <div class="content">
         <aside>
