@@ -16,6 +16,15 @@ function App() {
   const [result, setResult] = useState('');
   const [techs, setTechs] = React.useState([]);
 
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  }
+
+  function showPosition(position) {
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  }
+
   const useStyles = makeStyles(theme => ({
     formControl: {
       margin: theme.spacing(1),
@@ -106,66 +115,74 @@ function App() {
     result(removeUser.data.result);
   } 
 
-  console.log(process.env.APP_URL);
-
   return (
     <div id="app">
-      <aside>
-        <form onSubmit={handleSubmit}>
-          <div className="input-block">
-            <label htmlFor="">Github username:</label>
-            <input required type="text" value={username} onChange={e => setUsername(e.target.value)} />
-          </div>
-          
-          <div className="input-block">
-            <label htmlFor="">Techs:</label>
-            <Select
-              labelId="demo-mutiple-chip-label"
-              id="demo-mutiple-chip"
-              required
-              multiple
-              value={techs}
-              onChange={handleChange}
-              input={<Input id="select-multiple-chip" />}
-              renderValue={selected => (
-                <div className={classes.chips}>
-                  {selected.map(value => (
-                    <Chip key={value} label={value} className={classes.chip} />
-                  ))}
-                </div>
-              )}
-              MenuProps={MenuProps}
-            >
-          {names.map(name => (
-            <MenuItem key={name} value={name}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-          </div>
+      <div class="container">
+      <h1>DevRadar</h1>
 
-          <div className="input-block half">
-            <label htmlFor="">Latitude:</label>
-            <input required type="text" value={latitude} onChange={e => setLatitude(e.target.value)} />
-          </div>
-           
-          <div className="input-block half fright">
-            <label htmlFor="">Longitude:</label>
-            <input required type="text" value={longitude} onChange={e => setLongitude(e.target.value)} />
-          </div>
+      <p>Devs subscribed with coordinate within 10 kilometers from you will appear in the mobile app.</p>
+      <p>Mobile App APK (Android Only): <a href="https://omnistack-week-10-nodejs.herokuapp.com/devradar.apk">Download</a></p>
 
-          <input type="submit" value="Send" />
-          {result}
-        </form>
-      </aside>
-      
-      <main>
-        <ul className="Persons">
-          {users.map(user => (
-            <Person key={user._id} user={user} remove={removeUser} result={setResult} />
-          ))}        
-        </ul>    
-      </main>
+      <div class="content">
+        <aside>
+          <form onSubmit={handleSubmit}>
+            <div className="input-block">
+              <label htmlFor="">Github username:</label>
+              <input required type="text" value={username} onChange={e => setUsername(e.target.value)} />
+            </div>
+            
+            <div className="input-block">
+              <label htmlFor="">Techs:</label>
+              <Select
+                labelId="demo-mutiple-chip-label"
+                id="demo-mutiple-chip"
+                required
+                multiple
+                value={techs}
+                onChange={handleChange}
+                input={<Input id="select-multiple-chip" />}
+                renderValue={selected => (
+                  <div className={classes.chips}>
+                    {selected.map(value => (
+                      <Chip key={value} label={value} className={classes.chip} />
+                    ))}
+                  </div>
+                )}
+                MenuProps={MenuProps}
+              >
+            {names.map(name => (
+              <MenuItem key={name} value={name}>
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+            </div>
+
+            <div className="input-block half">
+              <label htmlFor="">Latitude:</label>
+              <input required type="text" value={latitude} onChange={e => setLatitude(e.target.value)} />
+            </div>
+            
+            <div className="input-block half fright">
+              <label htmlFor="">Longitude:</label>
+              <input required type="text" value={longitude} onChange={e => setLongitude(e.target.value)} />
+            </div>
+
+            <input type="submit" value="Subscribe" />
+            
+            { (result!="" && <div class="msg">{result}</div>) }
+          </form>
+        </aside>
+        
+        <main>
+          <ul className="Persons">
+            {users.map(user => (
+              <Person key={user._id} user={user} remove={removeUser} result={setResult} />
+            ))}        
+          </ul>    
+        </main>
+        </div>
+      </div>
     </div>
   ); 
 }
